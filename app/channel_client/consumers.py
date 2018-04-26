@@ -1,5 +1,4 @@
 from channels.auth import channel_session_user
-from channels import Group
 import json
 
 

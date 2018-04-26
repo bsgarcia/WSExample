@@ -23,7 +23,7 @@ def on_close(ws):
 def on_open(ws):
     def run(*args):
         while True:
-            ws.send(json.dumps({"text": "hey"}))
+            ws.send(json.dumps({"text": "salut"}))
             time.sleep(1)
             # ws.close()
             print("thread terminating...")
@@ -33,7 +33,7 @@ def on_open(ws):
 if __name__ == "__main__":
     websocket.enableTrace(True)
     ws = websocket.WebSocketApp(
-        "ws://10.5.5.15:8000/",
+        "ws://localhost:8000/",
         on_message=on_message,
         on_error=on_error,
         on_close=on_close
