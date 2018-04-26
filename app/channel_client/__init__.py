@@ -1,1 +1,1 @@
-from . import consumers, helpers, routing, tasks
+from . import consumers, helpers, tasks

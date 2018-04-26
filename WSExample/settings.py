@@ -70,6 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'WSExample.wsgi.application'
+ASGI_APPLICATION = 'WSExample.routing.application'
 
 
 # Database
