@@ -1,11 +1,9 @@
-from channels.generic.websocket import WebsocketConsumer, SyncConsumer, AsyncConsumer
-from asgiref.sync import async_to_sync, sync_to_async
-
-import asyncio
-
 import json
 import time
 import numpy as np
+
+from channels.generic.websocket import WebsocketConsumer, AsyncConsumer
+from asgiref.sync import async_to_sync
 
 
 class Consumer(WebsocketConsumer):
@@ -31,35 +29,35 @@ class Consumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
 
-
+        print('text data: ', text_data)
+        print('bytes data: ', bytes_data)
         async_to_sync(self.channel_layer.send)(
             'generate-id',
             {
-                "type": "generate.id",
-                "message": "tamere"
+                'type': 'generate.id',
             }
         )
 
+        self.send(text_data='ok')
+
     def group_message(self, message):
 
-        self.send(text_data=message["message"])
+        self.send(text_data=message['message'])
 
 
 class GenerateConsumer(AsyncConsumer):
 
-    async def generate_id(self, message):
+    async def generate_id(self, *args):
 
-        time.sleep(3)
+        time.sleep(2)
 
         await self.channel_layer.group_send(
             'test',
             {
                 'type': 'group.message',
-                'message': message['message']
+                'message': str(np.random.randint(999999999))
             }
 
         )
-
-
 
 
