@@ -20,6 +20,8 @@ class Consumer(WebsocketConsumer):
 
         self.accept()
 
+        self.send(text_data='ok')
+
     def disconnect(self, close_code):
 
         # Leave room group
