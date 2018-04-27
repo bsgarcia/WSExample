@@ -1,6 +1,7 @@
 import json
 import time
 import numpy as np
+import asyncio
 
 from channels.generic.websocket import WebsocketConsumer, AsyncConsumer
 from asgiref.sync import async_to_sync
@@ -49,7 +50,7 @@ class GenerateConsumer(AsyncConsumer):
 
     async def generate_id(self, *args):
 
-        time.sleep(2)
+        asyncio.sleep(2)
 
         await self.channel_layer.group_send(
             'test',
