@@ -23,7 +23,7 @@ def on_close(ws):
 def on_open(ws):
     def run(*args):
         while True:
-            ws.send(json.dumps({"text": "salut"}))
+            ws.send(json.dumps({"int": 2}))
             time.sleep(1)
             # ws.close()
             print("thread terminating...")

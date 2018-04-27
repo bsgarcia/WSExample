@@ -1,13 +1,16 @@
-import json
 import time
 import numpy as np
-import asyncio
 
-from channels.generic.websocket import WebsocketConsumer, AsyncConsumer
+from channels.generic.websocket import WebsocketConsumer, SyncConsumer
 from asgiref.sync import async_to_sync
 
 
-class Consumer(WebsocketConsumer):
+from channels.layers import get_channel_layer
+
+import app.views
+
+
+class WebSocketConsumer(WebsocketConsumer):
 
     group_test = 'test'
 
@@ -32,29 +35,26 @@ class Consumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
 
-        print('text data: ', text_data)
-        print('bytes data: ', bytes_data)
-        async_to_sync(self.channel_layer.send)(
-            'generate-id',
-            {
-                'type': 'generate.id',
-            }
-        )
-
-        self.send(text_data='ok')
+        print('About to send from ext')
+        app.views.ext_f()
+        print('done')
 
     def group_message(self, message):
 
-        self.send(text_data=message['message'])
+        self.send(text_data=message['text'])
 
 
-class GenerateConsumer(AsyncConsumer):
+def f(x):
+    return x**2
 
-    async def generate_id(self, *args):
 
-        asyncio.sleep(2)
+class MainConsumer(SyncConsumer):
 
-        await self.channel_layer.group_send(
+    def generate_id(self, *args):
+
+        time.sleep(2)
+
+        async_to_sync(self.channel_layer.group_send)(
             'test',
             {
                 'type': 'group.message',
@@ -64,3 +64,15 @@ class GenerateConsumer(AsyncConsumer):
         )
 
 
+class WSDialog:
+
+    @staticmethod
+    def group_send(group, data):
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            'test',
+            {
+                'type': 'group.message',
+                'text': data['message']
+            }
+        )

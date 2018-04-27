@@ -4,6 +4,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 import app.routing
 import app.consumers
 
+
 application = ProtocolTypeRouter({
     # (http->django views is added by default)
     'websocket': AuthMiddlewareStack(
@@ -13,7 +14,7 @@ application = ProtocolTypeRouter({
     ),
 
     'channel': ChannelNameRouter({
-        'generate-id': app.consumers.GenerateConsumer,
+        'main': app.consumers.MainConsumer,
     }),
 
 })

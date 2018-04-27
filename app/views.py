@@ -1,5 +1,6 @@
-from django.http import JsonResponse
+import app.consumers
 
 
-def f():
-    return JsonResponse({"message": "Requested a view!"})
+def ext_f():
+
+    app.consumers.WSDialog.group_send('test', {"message": 'tamere'})
