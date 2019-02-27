@@ -26,11 +26,12 @@ def on_open(ws):
             ws.send(json.dumps({"int": 2}))
             time.sleep(1)
             # ws.close()
-            print("thread terminating...")
+            # print("thread terminating...")
     thread.start_new_thread(run, ())
 
 
 if __name__ == "__main__":
+
     websocket.enableTrace(True)
     ws = websocket.WebSocketApp(
         "ws://localhost:8000/",
